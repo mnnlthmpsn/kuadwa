@@ -11,7 +11,6 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-
   String category = 'farms';
 
   List<Map> farms = [];
@@ -54,14 +53,6 @@ class _HomepageState extends State<Homepage> {
               padding: const EdgeInsets.only(right: 5, top: 3),
               child: SearchBar(),
             )
-            // Transform.rotate(
-            //   angle: 180 * math.pi / 47,
-            //   child: IconButton(
-            //       onPressed: () {},
-            //       icon: Badge(
-            //           elevation: 0, child: Icon(Icons.notifications_none)),
-            //       color: Colors.grey),
-            // ),
           ]),
       body: Column(
         children: <Widget>[
@@ -76,7 +67,10 @@ class _HomepageState extends State<Homepage> {
               },
               itemCount: currentItems.length,
               itemBuilder: (context, index) {
-                return MyCard(image: currentItems[index]['cover_image_thumbnail'], name: currentItems[index]['name'],);
+                return MyCard(
+                  image: currentItems[index]['cover_image_thumbnail'],
+                  name: currentItems[index]['name'],
+                );
               },
             ),
           ),
@@ -87,10 +81,14 @@ class _HomepageState extends State<Homepage> {
         children: <Widget>[
           FloatingActionButton(
             backgroundColor: Colors.green,
-            onPressed: (){
-              category == 'farms' ? category = 'businesses' : category = 'farms';
+            onPressed: () {
+              category == 'farms'
+                  ? category = 'businesses'
+                  : category = 'farms';
             },
-            child: category == 'farms' ? Icon(Icons.agriculture, color: Colors.white) : Icon(Icons.business_center_sharp, color: Colors.white),
+            child: category == 'farms'
+                ? Icon(Icons.agriculture, color: Colors.white)
+                : Icon(Icons.business_center_sharp, color: Colors.white),
           ),
         ],
       ),
