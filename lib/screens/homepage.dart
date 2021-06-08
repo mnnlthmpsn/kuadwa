@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:kuadwa/components/card.dart';
 import 'package:badges/badges.dart';
 import 'package:kuadwa/components/searchbar.dart';
+import 'package:kuadwa/utils/api.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -10,7 +11,34 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  List<String> items = ['Joe', 'Kobby', 'Kofi', 'Ama', 'Yaw'];
+
+  String category = 'farms';
+
+  List<Map> farms = [];
+  List<Map> businesses = [];
+  List<Map> currentItems = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getFarms();
+    _getBusinesses();
+    _setCat();
+  }
+
+  _setCat() {
+    category == 'farms' ? currentItems = farms : currentItems = businesses;
+  }
+
+  _getFarms() async {
+    await getFarms().then((res) => setState(() => farms = res.data));
+  }
+
+  _getBusinesses() async {
+    await getAgriBus().then((res) => setState(() => businesses = res.data));
+    print(businesses);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +74,9 @@ class _HomepageState extends State<Homepage> {
                   child: Divider(),
                 );
               },
-              itemCount: items.length,
+              itemCount: currentItems.length,
               itemBuilder: (context, index) {
-                return MyCard();
+                return MyCard(image: currentItems[index]['cover_image_thumbnail'], name: currentItems[index]['name'],);
               },
             ),
           ),
@@ -59,8 +87,10 @@ class _HomepageState extends State<Homepage> {
         children: <Widget>[
           FloatingActionButton(
             backgroundColor: Colors.green,
-            onPressed: null,
-            child: Icon(Icons.agriculture, color: Colors.white),
+            onPressed: (){
+              category == 'farms' ? category = 'businesses' : category = 'farms';
+            },
+            child: category == 'farms' ? Icon(Icons.agriculture, color: Colors.white) : Icon(Icons.business_center_sharp, color: Colors.white),
           ),
         ],
       ),
