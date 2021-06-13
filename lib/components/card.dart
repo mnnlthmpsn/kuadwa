@@ -12,8 +12,8 @@ class MyCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          height: 180,
-          width: 180,
+          height: 120,
+          width: 120,
           decoration: BoxDecoration(boxShadow: [
             BoxShadow(
               color: Colors.white10,
@@ -30,19 +30,19 @@ class MyCard extends StatelessWidget {
                 image != null
                     ? 'https://www.kuadwa.com/${image}'
                     : 'https://images.unsplash.com/photo-1557234195-bd9f290f0e4d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YWdyaWN1bHR1cmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60',
-                height: 150,
-                width: 150,
+                height: 120,
+                width: 120,
                 fit: BoxFit.cover,
               ),
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
         ),
         Container(
-          height: 180,
-          width: MediaQuery.of(context).size.width * 0.45,
+          height: 130,
+          width: MediaQuery.of(context).size.width * 0.60,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(10, 20.0, 0, 20.0),
             child: Column(
