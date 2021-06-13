@@ -13,9 +13,9 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   String category = 'farms';
 
-  List<Map> farms = [];
-  List<Map> businesses = [];
-  List<Map> currentItems = [];
+  dynamic farms = [];
+  dynamic businesses = [];
+  dynamic currentItems = [];
 
   @override
   void initState() {
@@ -23,24 +23,26 @@ class _HomepageState extends State<Homepage> {
     super.initState();
     _getFarms();
     _getBusinesses();
-    _setCat();
-  }
-
-  _setCat() {
-    category == 'farms' ? currentItems = farms : currentItems = businesses;
   }
 
   _getFarms() async {
-    await getFarms().then((res) => setState(() => farms = res.data));
+    await getFarms().then((res) => setState(() => farms = res['details']));
   }
 
   _getBusinesses() async {
-    await getAgriBus().then((res) => setState(() => businesses = res.data));
-    print(businesses);
+    await getAgriBus()
+        .then((res) => setState(() => businesses = res['details']));
   }
+
+  _setCat() => category == 'farms'
+      ? setState(() => currentItems = farms)
+      : setState(() => currentItems = businesses);
 
   @override
   Widget build(BuildContext context) {
+    // run this anytime something changes
+    _setCat();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -83,8 +85,8 @@ class _HomepageState extends State<Homepage> {
             backgroundColor: Colors.green,
             onPressed: () {
               category == 'farms'
-                  ? category = 'businesses'
-                  : category = 'farms';
+                  ? setState(() => category = 'businesses')
+                  : setState(() => category = 'farms');
             },
             child: category == 'farms'
                 ? Icon(Icons.agriculture, color: Colors.white)

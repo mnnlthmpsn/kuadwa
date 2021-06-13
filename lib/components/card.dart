@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MyCard extends StatelessWidget {
-
   final image;
   final name;
 
-  MyCard({ this.image, this.name });
+  MyCard({this.image, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,9 @@ class MyCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Image.network(
-                image,
+                image != null
+                    ? 'https://www.kuadwa.com/${image}'
+                    : 'https://images.unsplash.com/photo-1557234195-bd9f290f0e4d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YWdyaWN1bHR1cmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60',
                 height: 150,
                 width: 150,
                 fit: BoxFit.cover,
@@ -47,9 +48,7 @@ class MyCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(name)
-              ],
+              children: <Widget>[Text(name)],
             ),
           ),
         ),
