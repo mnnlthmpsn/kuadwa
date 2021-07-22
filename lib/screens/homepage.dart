@@ -1,99 +1,63 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kuadwa/components/card.dart';
-import 'package:badges/badges.dart';
-import 'package:kuadwa/components/searchbar.dart';
-import 'package:kuadwa/utils/api.dart';
+import 'package:kuadwa/components/navCard.dart';
 
 class Homepage extends StatefulWidget {
+  const Homepage({Key? key}) : super(key: key);
+
   @override
   _HomepageState createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
-  String category = 'farms';
-
-  dynamic farms = [];
-  dynamic businesses = [];
-  dynamic currentItems = [];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _getFarms();
-    _getBusinesses();
-  }
-
-  _getFarms() async {
-    await getFarms().then((res) => setState(() => farms = res['details']));
-  }
-
-  _getBusinesses() async {
-    await getAgriBus()
-        .then((res) => setState(() => businesses = res['details']));
-  }
-
-  _setCat() => category == 'farms'
-      ? setState(() => currentItems = farms)
-      : setState(() => currentItems = businesses);
-
   @override
   Widget build(BuildContext context) {
-    // run this anytime something changes
-    _setCat();
-
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: MediaQuery.of(context).size.height * 0.08,
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
+      body: SafeArea(
+          child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 5, top: 3),
-              child: SearchBar(),
-            )
-          ]),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.separated(
-              shrinkWrap: true,
-              separatorBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: Divider(),
-                );
-              },
-              itemCount: currentItems.length,
-              itemBuilder: (context, index) {
-                return MyCard(
-                  image: currentItems[index]['cover_image_thumbnail'],
-                  name: currentItems[index]['name'],
-                );
-              },
+              padding: const EdgeInsets.only(
+                  left: 20.0, right: 20, top: 15, bottom: 15),
+              child: Text(
+                'Featured Profiles',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
+              ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          FloatingActionButton(
-            backgroundColor: Colors.green,
-            onPressed: () {
-              category == 'farms'
-                  ? setState(() => category = 'businesses')
-                  : setState(() => category = 'farms');
-            },
-            child: category == 'farms'
-                ? Icon(Icons.agriculture, color: Colors.white)
-                : Icon(Icons.business_center_sharp, color: Colors.white),
-          ),
-        ],
-      ),
+            CarouselSlider(
+              options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height * .4,
+                  enableInfiniteScroll: false,
+                  initialPage: 1,
+                  viewportFraction: .8,
+                  enlargeCenterPage: true),
+              items: [1, 2, 3, 4, 5].map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return MyCard();
+                  },
+                );
+              }).toList(),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 20, top: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('Good Morning,', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 35, color: Colors.grey),),
+                  Text('What would you like to do?', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),),
+                  SizedBox(height: 10,),
+                  NavCard(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      )),
     );
   }
 }
